@@ -29,6 +29,19 @@ class << self
     return midictr  
   end
 
+
+  ##
+  # Pour choisir l'opération à exécuter
+  #
+  def choose_operation
+    clear
+    Q.select("Opération à exécuter :") do |q|
+      q.choices OPERATIONS_MIDICONTROLLER
+      q.per_page OPERATIONS_MIDICONTROLLER.count
+    end
+  end
+
+
   ##
   # Pour choisir l'entrée
   #
@@ -58,10 +71,14 @@ def initialize(input, midimap)
   @input   = input
 end
 
+# =====================================
+# OPÉRATIONS GÉNÉRALES
+
 ##
-# Lancement de l'écoute
+# Lancement de l'écoute du clavier
 #
 def start
+  puts "Pressez une touche du clavier MIDI\n(2 DO séparés de 2 octave pour finir)".bleu
   while true do
     #
     # On attend la prochaine touche
@@ -75,24 +92,49 @@ def start
   end
 end #/start
 
+##
+# Affichage d'une map
+def display_map
+  MidiMap.display_map
+end
+
+# /FIN DES OPÉRATIONS GÉNÉRALES
+# =====================================
+
+# ----------------------
+# Sous-opérations
+
+
+##
+# Étude des touches pressées
+# --------------------------
+# @param {Array} m  contient la liste de toutes les touches pressées
+#                   en même temps
 def study_keys(m)
+  # puts "Étude de : #{m.inspect}"
   #
   # On passe ici quand une ou plusieurs touches ont été pressées
   #
   touches = []
   m.collect do |dkey| 
     mk = MidiKey.new(dkey)
-    if @last_time && mk.on? && mk.key == @last_key && (mk.time - @last_time) < 1
-      # TODO : En fait, demander ce qu'il faut faire
-      return false # pour s'arrêter
+    if mk.on?
+      if mk.note_name == 'C'
+        if @last_do && (@last_do.octave - mk.octave).abs == 2
+          return false
+        end
+        @last_do = mk
+      end
     else
-      @last_time  = mk.time
-      @last_key   = mk.key
+      if mk.note_name == 'C' && @last_do && mk.octave == @last_do.octave
+        @last_do = nil
+      end
+      touches << mk # on ne tient compte que les NOTE-OFF
     end
-    mk.on? && touches << mk
   end
+
   #
-  # On exécute chaque touche
+  # On exécute chaque touche (s'il y en a)
   #
   touches.each do |midikey| 
     traite(midikey)
@@ -106,11 +148,11 @@ end
 # Traitement de la note midi
 #
 def traite(midinote)
-  puts "-> #{midinote.ref}"
+  puts "-> #{midinote.ref}".vert
   if midimap.has_operation?(midinote)
     midimap.operation(midinote).exec
   else
-    puts "Pas d'opération pour cette touche"
+    puts "Pas d'opération pour la touche #{midinote.note}".bleu
   end
 end
 

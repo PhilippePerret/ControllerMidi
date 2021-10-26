@@ -28,6 +28,10 @@ def exec_clipboard
   puts "J'ai mis “#{content}” dans le presse-papier."
 end
 
+def exec_notice
+  puts content.bleu
+end
+
 
 # /Fin exécution par type d'opération
 # ====================================

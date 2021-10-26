@@ -20,7 +20,18 @@ attr_reader :data
 # La touche pressée, par exemple 60 (key) pour un DO3 (note)
 #
 attr_reader :key
-attr_reader :note
+
+#
+# Le nom de la note avec octave
+# p.e. 'C5'
+#
+# :note
+
+#
+# Le nom de la note (anglo-saxon) sans l'octave
+# p.e. 'C'
+#
+# :note_name
 
 #
 # Le premier chiffre où 144 correspond à NOTE ON et 128 à NOTE OFF
@@ -72,7 +83,15 @@ end
 
 
 def note
-  @note ||= get_note
+  @note ||= note_properties[:note]
+end
+
+def note_name
+  @note_name ||= note_properties[:note_name]
+end
+
+def octave
+  @octave ||= note_properties[:octave]
 end
 
 ##
@@ -80,10 +99,14 @@ end
 #
 # Les octaves
 # 12(-1), 24(0), 36(1), 48(2), 60(3), 72(4), 84(5), 96(6)
-def get_note
-  octave = key / 12 - 2
-  n = GAMME_CHROMATIQUE[key - (octave + 2) * 12]
-  "#{n}#{octave}"
+def note_properties
+  @note_properties ||= begin
+    @octave = key / 12 - 2
+    @note_name = GAMME_CHROMATIQUE[key - (@octave + 2) * 12]
+    @note = "#{@note_name}#{@octave}"
+
+    {note: @note, note_name: @note_name, octave: @octave}
+  end
 end
 
 end #/MidiKey

@@ -24,12 +24,21 @@ class << self
   def choose
     if maps.count > 1
       name = Q.select("Map à utiliser :") do |q|
-        q.choices [{name:"Première map", value:'first'}]
+        q.choices [{name:"Première map", value:'first'}] << CHOIX_RENONCER
       end
     else
       name = maps.first[:value]
     end
-    new(name)
+
+    return new(name)
+  end
+
+  ##
+  # Pour afficher une map
+  #
+  def display_map(map = nil)
+    map ||= choose || return
+    map.display
   end
 
   ##
@@ -60,6 +69,16 @@ attr_reader :name
 
 def initialize name
   @name = name
+end
+
+##
+# Affichage de la map
+# --------------------
+# L'affichage se fait par un fichier HTML où se dessine le 
+# clavier, avec les touches définies
+#
+def display
+  puts "Je dois apprendre à afficher la map #{name}".jaune
 end
 
 ##

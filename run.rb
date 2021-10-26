@@ -5,4 +5,6 @@ require_relative 'lib/_required'
 
 
 midicontroller = MidiController.init
-midicontroller.start
+while operation = MidiController.choose_operation
+  midicontroller.send(operation)
+end

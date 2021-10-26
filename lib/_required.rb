@@ -12,8 +12,11 @@ Q = TTY::Prompt.new(symbols: {radio_on:"☒", radio_off:"☐"}) # cross : essai 
 LIB_FOLDER = __dir__
 APP_FOLDER = File.dirname(LIB_FOLDER)
 
+require_relative 'constants'
+
 #
 # Charger toutes les classes de l'application
 #
+Dir["#{__dir__}/required/*.rb"].each do |m| require m end
 Dir["#{__dir__}/classes/*.rb"].each do |m| require m end
 

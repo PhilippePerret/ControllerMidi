@@ -16,4 +16,12 @@ Double-cliquer simplement sur le fichier 'run.rb'. Il est auto-exécutable.
 
 ## Arrêt de l'application
 
-Pour arrêter l'application, il suffit de jouer deux fois la même touche (ce qui n'est jamais nécessaire normalement). Cela ouvre un menu demandant quoi faire, choisir "Terminer"
+Pour arrêter l'application, il suffit de jouer en même temps les deux DO à l'octave. Cela ouvre un menu demandant quoi faire, choisir "Terminer"
+
+## Définition de la carte
+
+## Visualisation de la carte
+
+Une carte peut-être visualiser dans un navigateur grâce à son fichier HTML produit.
+
+Il suffit de choisir le menu 'visualiser la carte…'
