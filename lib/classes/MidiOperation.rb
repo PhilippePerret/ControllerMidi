@@ -16,7 +16,7 @@ class MidiOperation
 #
 # Exécution de l'opération (en fonction de son type)
 def exec
-  puts "-> appel de exec_#{type}"
+  # puts "-> appel de exec_#{type}"
   send("exec_#{type}".to_sym)
 end
 
@@ -24,11 +24,13 @@ end
 # Exécution par type d'opération
 
 def exec_clipboard
+  puts "\n\n"
   `echo "#{content.gsub(/\"/,'\\"')}" | pbcopy`
-  puts "J'ai mis “#{content}” dans le presse-papier."
+  puts "J'ai mis “#{content}” dans le presse-papier.".vert
 end
 
 def exec_notice
+  puts "\n\n"
   puts content.bleu
 end
 

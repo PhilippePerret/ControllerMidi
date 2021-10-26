@@ -25,8 +25,8 @@ class << self
   # @return {MidiController} Le contrôleur créé
   #
   def init
-    midictr = new(get_input, MidiMap.choose)
-    return midictr  
+    midictrl = new(get_input)
+    return midictrl
   end
 
 
@@ -58,7 +58,11 @@ end #/<< self
 # ------------------------------------------------------------------
 
 attr_reader :input
-attr_reader :midimap
+
+#
+# La carte des touches à utiliser
+#
+# :midimap
 
 ##
 # Initialisation
@@ -66,7 +70,7 @@ attr_reader :midimap
 # @param {UniMIDI::Input} input Entrée MIDI utilisée
 # @param {MidiMap} midimap    Carte des opérations par touche
 #
-def initialize(input, midimap)
+def initialize(input, midimap = nil)
   @midimap = midimap
   @input   = input
 end
@@ -78,6 +82,7 @@ end
 # Lancement de l'écoute du clavier
 #
 def start
+  midimap # pour en choisir une le cas échéant
   puts "Pressez une touche du clavier MIDI\n(2 DO séparés de 2 octave pour finir)".bleu
   while true do
     #
@@ -96,6 +101,13 @@ end #/start
 # Affichage d'une map
 def display_map
   MidiMap.display_map
+end
+
+##
+# Définition d'une map choisie
+#
+def define_map
+  MidiMap.define_map
 end
 
 # /FIN DES OPÉRATIONS GÉNÉRALES
@@ -156,5 +168,16 @@ def traite(midinote)
   end
 end
 
+
+##
+# Pour choisir la map de touches à utiliser
+#
+def midimap
+  @midimap ||= MidiMap.choose
+end
+# setter
+def midimap= map
+  @midimap = map
+end
 
 end #/MidiControler

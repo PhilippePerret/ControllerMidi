@@ -23,9 +23,10 @@ class << self
   # @return {MidiMap} L'instance de la map choisie
   def choose
     if maps.count > 1
-      name = Q.select("Map à utiliser :") do |q|
-        q.choices [{name:"Première map", value:'first'}] << CHOIX_RENONCER
-      end
+      name = Q.select("Map de touches à utiliser :".bleu) do |q|
+        q.choices maps
+        q.per_page maps.count
+      end || return
     else
       name = maps.first[:value]
     end
@@ -42,13 +43,24 @@ class << self
   end
 
   ##
+  # Pour ouvrir une map pour pouvoir la définir
+  #
+  def define_map(map = nil)
+    map ||= choose || return
+    map.open
+  end
+
+  ##
   # Retourne la liste des maps
   #
   def maps
-    # TODO : la lire vraiment dans le dossier
-    [
-      {name: "Ma première map", value:"test"}
-    ]
+    @maps ||= begin
+      Dir["#{folder}/*.yaml"].collect do |path|
+        dmap = YAML.load_file(path)
+        affixe = File.basename(path, File.extname(path))
+        {name: (dmap['titre']||dmap[:titre]||affixe), value:affixe}
+      end << CHOIX_RENONCER
+    end
   end
 
   ##
@@ -82,6 +94,15 @@ def display
 end
 
 ##
+# Ouverture de la map
+# -------------------
+# Va permettre de la définir
+#
+def open
+  `open "#{path}"`
+end
+
+##
 # @return {MidiOperation} L'opération à exécuter sur la note
 # {MidiKey} +midikey+
 #
@@ -105,6 +126,7 @@ def data
     # Quelques petites transformations
     #
     dd.each do |note, dnote|
+      note != 'titre' || next
       dd[note] = dnote.merge!(note: note)
     end
 
