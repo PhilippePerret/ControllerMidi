@@ -85,7 +85,7 @@ def start
   midimap # pour en choisir une le cas échéant
   clear
   puts "Pressez une touche du clavier MIDI\nDO2 (le plus à gauche) => aperçu des touches\n(2 DO séparés de 2 octave pour finir)".bleu
-  puts "-"*60
+  puts ("-"*60).bleu
   while true do
     #
     # On attend la prochaine touche

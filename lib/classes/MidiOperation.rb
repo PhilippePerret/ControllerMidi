@@ -39,6 +39,27 @@ def exec_url
   `open -a Safari #{content}`
 end
 
+##
+# Pour ouvrir un fichier
+#
+def exec_file
+  puts "\n\nJ'ouvre #{content}…".bleu
+  cmd = ['open']
+  if app
+    cmd << "-a \"#{app}\""
+  end
+  cmd << "\"#{content}\""
+  cmd = cmd.join(' ')
+  `#{cmd}`
+end
+
+##
+# Pour ouvrir un dossier
+#
+def exec_folder
+  puts "\n\nJ'ouvre le dossier #{content}…".bleu
+  `open -a Finder "#{content}"`
+end
 
 # /Fin exécution par type d'opération
 # ====================================
@@ -56,6 +77,9 @@ def type
 end
 def content
   @content ||= data['content']||data[:content]
+end
+def app
+  @app ||= data['app']||data[:app]
 end
 
 

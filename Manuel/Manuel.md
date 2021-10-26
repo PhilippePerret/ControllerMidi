@@ -58,6 +58,12 @@ notice      Simplement pour écrire un texte à l'écran (pour se
 
 url         Pour rejoindre avec Safari l'URL définie dans :content
 
+file        Pour ouvrir le fichier de path :content
+            Si 'app:' est définie, c'est l’application avec laquelle
+            il faut ouvrir le fichier.
+
+folder      Pour ouvrir le dossier de path :content dans le Finder
+
 ~~~
 
 

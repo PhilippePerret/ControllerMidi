@@ -59,7 +59,7 @@ class << self
         dmap = YAML.load_file(path)
         affixe = File.basename(path, File.extname(path))
         {name: (dmap['titre']||dmap[:titre]||affixe), value:affixe}
-      end.sort_by{|dmap| dmap[:affixe]} << CHOIX_RENONCER
+      end.sort_by{|dmap| dmap[:affixe]}.reverse << CHOIX_RENONCER
     end
   end
 
