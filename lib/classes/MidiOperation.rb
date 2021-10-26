@@ -34,6 +34,11 @@ def exec_notice
   puts content.bleu
 end
 
+def exec_url
+  puts "\n\nJe rejoins l'adresse #{content}…".bleu
+  `open -a Safari #{content}`
+end
+
 
 # /Fin exécution par type d'opération
 # ====================================

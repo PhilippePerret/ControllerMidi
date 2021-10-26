@@ -83,7 +83,9 @@ end
 #
 def start
   midimap # pour en choisir une le cas échéant
-  puts "Pressez une touche du clavier MIDI\n(2 DO séparés de 2 octave pour finir)".bleu
+  clear
+  puts "Pressez une touche du clavier MIDI\nDO2 (le plus à gauche) => aperçu des touches\n(2 DO séparés de 2 octave pour finir)".bleu
+  puts "-"*60
   while true do
     #
     # On attend la prochaine touche
@@ -161,7 +163,9 @@ end
 #
 def traite(midinote)
   puts "-> #{midinote.ref}".vert
-  if midimap.has_operation?(midinote)
+  if midinote.note == 'C2'
+    midimap.display
+  elsif midimap.has_operation?(midinote)
     midimap.operation(midinote).exec
   else
     puts "Pas d'opération pour la touche #{midinote.note}".bleu

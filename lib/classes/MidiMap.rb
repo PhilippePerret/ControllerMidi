@@ -59,7 +59,7 @@ class << self
         dmap = YAML.load_file(path)
         affixe = File.basename(path, File.extname(path))
         {name: (dmap['titre']||dmap[:titre]||affixe), value:affixe}
-      end << CHOIX_RENONCER
+      end.sort_by{|dmap| dmap[:affixe]} << CHOIX_RENONCER
     end
   end
 
@@ -89,8 +89,19 @@ end
 # L'affichage se fait par un fichier HTML où se dessine le 
 # clavier, avec les touches définies
 #
+# Pour le moment, on affiche les touches définies en console (c'est
+# fait aussi avec la touche C2)
+#
 def display
-  puts "Je dois apprendre à afficher la map #{name}".jaune
+  puts "\n\n"
+  tit = "\tDescription des touches"
+  puts tit
+  puts "\t" + "-" * tit.length
+  # puts "data: #{data.inspect}"
+  data.each do |key, dkey|
+    puts "\t  #{key.ljust(4)} = #{dkey[:titre]||dkey['titre']}"
+  end
+  puts "\n\n"
 end
 
 ##
@@ -119,14 +130,16 @@ def has_operation?(midikey)
   data.key?(midikey.note) 
 end
 
+##
+# Les données (sauf le titre)
 def data
   @data ||= begin
     dd = YAML.load_file(path)
+    dd.delete('titre')
     #
     # Quelques petites transformations
     #
     dd.each do |note, dnote|
-      note != 'titre' || next
       dd[note] = dnote.merge!(note: note)
     end
 
