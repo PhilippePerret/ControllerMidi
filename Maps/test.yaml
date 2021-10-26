@@ -3,3 +3,7 @@ C3:
   titre: Ceci est l'opération à jouer avec la touche c3
   type:  clipboard
   content: Je suis un DO 3
+C4:
+  titre: Pour s'assurer qu'il ne soit pas sauvé
+  type: notice
+  content: Juste pour notifier quelqu'un ou quelque chose.

@@ -2,7 +2,8 @@
 *.rbc
 *.log
 
-Maps/
+/Maps/
+/Maps/*.yaml
 
 /.config
 /coverage/
